@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApplication2.Models;
-using WebApplication2.DTOs;
+using WebApplication2.DTO;
 
-namespace WebApplication2.Controllers;
+namespace TravelApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -22,9 +22,9 @@ public class TripsController : ControllerBase
     {
         var query = _context.Trips
             .Include(t => t.CountryTrips)
-                .ThenInclude(ct => ct.IdCountryNavigation)
+                .ThenInclude(ct => ct.Country)
             .Include(t => t.ClientTrips)
-                .ThenInclude(ct => ct.IdClientNavigation)
+                .ThenInclude(ct => ct.Client)
             .OrderByDescending(t => t.DateFrom);
 
         var totalCount = query.Count();
@@ -38,8 +38,8 @@ public class TripsController : ControllerBase
                 t.DateFrom,
                 t.DateTo,
                 t.MaxPeople,
-                Countries = t.CountryTrips.Select(c => new { c.IdCountryNavigation.Name }),
-                Clients = t.ClientTrips.Select(c => new { c.IdClientNavigation.FirstName, c.IdClientNavigation.LastName })
+                Countries = t.CountryTrips.Select(c => new { c.Country.Name }),
+                Clients = t.ClientTrips.Select(c => new { c.Client.FirstName, c.Client.LastName })
             }).ToList();
 
         return Ok(new
