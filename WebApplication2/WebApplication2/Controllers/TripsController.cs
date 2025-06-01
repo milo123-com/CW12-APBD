@@ -16,7 +16,7 @@ public class TripsController : ControllerBase
         _context = context;
     }
 
-    // GET /api/trips?page=1&pageSize=10
+
     [HttpGet]
     public IActionResult GetTrips([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
@@ -51,7 +51,7 @@ public class TripsController : ControllerBase
         });
     }
 
-    // POST /api/trips/{idTrip}/clients
+
     [HttpPost("{idTrip}/clients")]
     public IActionResult AssignClient(int idTrip, [FromBody] AddClientDto dto)
     {
